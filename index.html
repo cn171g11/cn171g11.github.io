@@ -1,10 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>我的个人主页</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的指挥中心</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        /* 搜索框样式 */
+        .search-container {
+            margin-top: 80px;
+            width: 90%;
+            max-width: 600px;
+        }
+        .search-box {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            background: var(--card-bg);
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        /* 卡片布局 */
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        .section-title {
+            grid-column: 1 / -1;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            margin-bottom: -5px;
+            margin-top: 20px;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-color);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            background: #2d3748;
+        }
+        .card i { font-size: 24px; margin-bottom: 10px; display: block; }
+        .card span { font-size: 14px; }
+    </style>
 </head>
 <body>
-    <h1>欢迎来到我的 GitHub 网页！</h1>
-    <p>这是我使用 GitHub Pages 创建的第一份页面。</p>
+
+    <div class="search-container">
+        <form action="https://www.baidu.com/s" method="GET" target="_blank">
+            <input type="text" name="wd" class="search-box" placeholder="搜索百度..." autofocus>
+        </form>
+    </div>
+
+    <div class="container">
+        <div class="section-title">常用工具</div>
+        <a href="https://github.com" class="card" target="_blank"><span>GitHub</span></a>
+        <a href="https://v.qq.com" class="card" target="_blank"><span>腾讯视频</span></a>
+        <a href="https://www.bilibili.com" class="card" target="_blank"><span>Bilibili</span></a>
+        <a href="https://pan.baidu.com" class="card" target="_blank"><span>百度网盘</span></a>
+
+        <div class="section-title">本地服务 (Win10)</div>
+        <a href="http://192.168.1.100:5005" class="card" title="需在Wi-Fi下使用"><span>WebDAV 存储</span></a>
+        <a href="http://192.168.1.100" class="card"><span>IIS 主页</span></a>
+        
+        <div class="section-title">其它</div>
+        <a href="https://chat.google.com" class="card"><span>Gemini AI</span></a>
+    </div>
+
+    <script>
+        // 简单的回车搜索逻辑（默认百度）
+        const searchInput = document.querySelector('.search-box');
+        searchInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && !this.value) e.preventDefault();
+        });
+    </script>
 </body>
 </html>
