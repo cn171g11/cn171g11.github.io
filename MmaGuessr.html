@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🌍 MmaGuessr v1.6.0 · 街景猜位置游戏 (OSM + Mapillary)</title>
+    <title>🌍 MmaGuessr v1.8.0 · 街景猜位置游戏 (OSM + Mapillary)</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -71,6 +71,19 @@
         }
         .home-footer .changelog-btn:hover { background: rgba(52,152,219,0.45); }
         #version-line { font-size: 12px; color: #8899bb; margin-top: 8px; }
+
+        /* Notion 文档入口（链接卡片式按钮，与全站风格一致） */
+        .home-footer .notion-btn {
+            font-size: 13px; color: #fff; background: rgba(26,188,156,0.20);
+            border: 1px solid #1abc9c; padding: 6px 18px; border-radius: 20px;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .home-footer .notion-btn:hover {
+            background: rgba(26,188,156,0.5); transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(26,188,156,0.35); color: #fff;
+        }
+        .home-footer .notion-btn:active { transform: translateY(0); }
 
         #changelog-overlay {
             position: fixed; inset: 0; z-index: 9000; display: none;
@@ -223,6 +236,17 @@
         #submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6); }
         #submit-btn:disabled { background: #999; cursor: not-allowed; box-shadow: none; }
 
+        /* 移动端地图呼出按钮（桌面端隐藏） */
+        #mobile-map-btn {
+            display: none; position: fixed; bottom: 20px; left: 20px; z-index: 1002;
+            padding: 12px 20px; background: linear-gradient(135deg, #3498db, #2980b9);
+            color: #fff; border: none; border-radius: 25px;
+            font-size: 15px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(52,152,219,0.4); transition: all 0.25s ease;
+        }
+        #mobile-map-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(52,152,219,0.6); }
+        #mobile-map-btn:active { transform: translateY(0); }
+
         /* ============ 结果弹窗 ============ */
         #result-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -294,9 +318,16 @@
         /* ============ 响应式（移动端） ============ */
         @media (max-width: 768px) {
             #home-screen h1 { font-size: 30px; }
-            #minimap-container { width: 52vw; height: 30vh; bottom: 12px; right: 12px; border-width: 2px; }
+            /* 移动端：默认隐藏小地图，由 🗺️ 按钮呼出 */
+            #minimap-container, #minimap-container.show { display: none !important; }
+            #minimap-container.mobile-open, #minimap-container.mobile-open.show {
+                display: block !important; width: 92vw; height: 50vh;
+                bottom: 80px; right: 4vw; left: auto; z-index: 1500; border-width: 3px;
+            }
             #minimap-container.enlarged { width: 94vw; height: 55vh; bottom: 12px; right: 3vw; }
-            #submit-btn { bottom: calc(30vh + 24px); right: 12px; padding: 12px 22px; font-size: 14px; }
+            #map-toggle-btn { display: none; }           /* 旧放大按钮移动端隐藏 */
+            #mobile-map-btn { display: block; }          /* 呼出/收起按钮 */
+            #submit-btn { bottom: 20px; right: 20px; padding: 12px 22px; font-size: 14px; }
             #info-bar { top: 10px; left: 10px; padding: 8px 12px; font-size: 12px; min-width: 140px; }
             #info-bar .score { font-size: 15px; }
             #timer-box { top: auto; bottom: 12px; left: 12px; transform: none; font-size: 18px; padding: 8px 18px; }
@@ -347,8 +378,9 @@
         </div>
         <div class="home-footer">
             <span class="bank-badge" id="bank-count">📚 题库共 -- 题</span>
-            <span class="ver-badge" id="home-version">版本 v1.6.0</span>
+            <span class="ver-badge" id="home-version">版本 v1.8.0</span>
             <button class="changelog-btn" onclick="openChangelog()">📋 更新记录</button>
+            <a class="notion-btn" href="https://app.notion.com/p/3ac41ee86a0281a08b49cd7759af7b7f" target="_blank" rel="noopener noreferrer">📔 游戏文档</a>
         </div>
     </div>
 
@@ -376,7 +408,7 @@
             <div id="xp-bar-bg"><div id="xp-bar-fill"></div></div>
             <div id="diff-stars">难度 ★☆☆☆☆</div>
         </div>
-        <div id="version-line">版本 v1.6.0</div>
+        <div id="version-line">版本 v1.8.0</div>
     </div>
 
     <div id="timer-box">⏱ <span id="timer-num">60</span>s</div>
@@ -403,6 +435,7 @@
     </div>
 
     <button id="submit-btn" onclick="submitGuess()" disabled>🎯 提交选择</button>
+    <button id="mobile-map-btn" onclick="toggleMobileMap()">🗺️ 地图</button>
 
     <!-- ============ 结果弹窗 ============ -->
     <div id="result-overlay">
@@ -445,10 +478,28 @@
         // 【版本号 & 更新记录】统一语义化版本号格式：v主版本.次版本.修订号
         // CHANGELOG 按时间倒序排列（最新在上），每条含版本号、日期、更新内容
         // ==========================================================
-        const VERSION = "v1.6.0";
+        const VERSION = "v1.8.0";
         const CHANGELOG = [
             {
-                version: "v1.6.0", date: "2026-07-28",
+                version: "v1.8.0", date: "2026-07-29 18:12:12",
+                changes: [
+                    "题库去重：移除 6 个重复点位（北京·天安门、上海·外滩、西安·钟楼、杭州·西湖、丽江·古城、香港·尖沙咀），每个地点名称仅保留一个，题库 173 → 167。",
+                    "新增「游戏文档」入口：主菜单可一键打开 Notion 文档（玩法教学 + 街景分布），新标签页打开，样式与全站一致。",
+                    "移动端体验优化：窄屏/触屏设备默认隐藏小地图，新增「🗺️ 地图」悬浮按钮可随时展开/收起，避免遮挡街景。",
+                    "版本号递增至 v1.8.0。"
+                ]
+            },
+            {
+                version: "v1.7.0", date: "2026-07-28 13:32:32",
+                changes: [
+                    "扩展街景至港澳台地区：新增经 Mapillary 覆盖验证的港澳台街景点位，并将街景搜索半径由约 440 米扩大到约 1.3 公里，确保三地街景可正常加载与显示。",
+                    "港澳台街景数据完整性验证：逐点调用 Mapillary 接口校验覆盖情况，仅保留有实际街景的点位。",
+                    "更新记录时间精确到秒：版本发布时间格式由「YYYY-MM-DD」改为「YYYY-MM-DD HH:MM:SS」。",
+                    "版本号递增至 v1.7.0。"
+                ]
+            },
+            {
+                version: "v1.6.0", date: "2026-07-28 10:35:00",
                 changes: [
                     "游戏名称与文件名统一为「MmaGuessr」，移除旧名「MmaGuesser」及「GeoGuessr 风格」等引用。",
                     "主菜单、标题栏、分享文案等所有出现游戏名称的位置均同步更新。",
@@ -456,7 +507,7 @@
                 ]
             },
             {
-                version: "v1.5.0", date: "2026-07-28",
+                version: "v1.5.0", date: "2026-07-28 09:55:00",
                 changes: [
                     "大幅扩充街景题库：新增约 64 个地点（覆盖六大洲、难度 1~5），总量从此前约 62 题增至 126 题。",
                     "主菜单新增「题库共 X 题」展示，区域限定模式在各洲卡片上公布该洲题目数量。",
@@ -464,7 +515,7 @@
                 ]
             },
             {
-                version: "v1.4.0", date: "2026-07-28",
+                version: "v1.4.0", date: "2026-07-28 09:10:00",
                 changes: [
                     "新增「版本号」展示：浏览器标题、主菜单与游戏信息栏均显示当前版本号。",
                     "新增「更新记录」按钮：可查看全部历史版本的更新说明（按时间倒序）。",
@@ -472,26 +523,26 @@
                 ]
             },
             {
-                version: "v1.3.0", date: "2026-07-28",
+                version: "v1.3.0", date: "2026-07-28 08:45:00",
                 changes: [
                     "修复切换回合时旧街景不消失的问题：加载新街景期间显示全屏「加载中」遮罩，旧画面不再残留。"
                 ]
             },
             {
-                version: "v1.2.0", date: "2026-07-28",
+                version: "v1.2.0", date: "2026-07-28 08:20:00",
                 changes: [
                     "修复抽题分布不均：多伦多出现频率偏高，改为「洗牌牌堆」公平抽题，各地区出现概率均衡。",
                     "修复街景切换时序误判：确认操作后到新街景加载完成前锁定交互，避免误判为上一轮答案。"
                 ]
             },
             {
-                version: "v1.1.0", date: "2026-07-27",
+                version: "v1.1.0", date: "2026-07-27 22:40:00",
                 changes: [
                     "修复街景无法显示的问题：地图在容器零尺寸时初始化导致飞行异常中断加载流程，已加防护与尺寸重算。"
                 ]
             },
             {
-                version: "v1.0.0", date: "2026-07-27",
+                version: "v1.0.0", date: "2026-07-27 20:15:00",
                 changes: [
                     "首次发布多模式地理猜谜游戏，集成 Mapillary 街景数据源。",
                     "包含五种模式：经典、限时、多轮竞赛、区域限定、无限模式。",
@@ -681,7 +732,48 @@
             { name: "巴西马瑙斯", lat: -3.1190, lng: -60.0217, region: "southamerica", difficulty: 5 },
             { name: "玻利维亚乌尤尼", lat: -20.1338, lng: -67.4891, region: "southamerica", difficulty: 5 },
             { name: "格陵兰伊卢利萨特", lat: 69.2167, lng: -51.1000, region: "northamerica", difficulty: 5 }
-        ];
+        ,
+            { name: "中国广州·广州塔", lat: 23.1066, lng: 113.3245, region: "asia", difficulty: 1 },
+            { name: "中国香港·维多利亚港", lat: 22.294, lng: 114.172, region: "asia", difficulty: 1 },
+            { name: "中国台北·台北101", lat: 25.0339, lng: 121.5720, region: "asia", difficulty: 1 },
+            { name: "中国成都·春熙路", lat: 30.657, lng: 104.081, region: "asia", difficulty: 1 },
+            { name: "中国重庆·解放碑", lat: 29.563, lng: 106.577, region: "asia", difficulty: 2 },
+            { name: "中国深圳·福田CBD", lat: 22.541, lng: 114.0579, region: "asia", difficulty: 2 },
+            { name: "中国南京·夫子庙", lat: 32.0295, lng: 118.795, region: "asia", difficulty: 2 },
+            { name: "中国武汉·黄鹤楼", lat: 30.5466, lng: 114.305, region: "asia", difficulty: 2 },
+            { name: "中国苏州·平江路", lat: 31.315, lng: 120.639, region: "asia", difficulty: 2 },
+            { name: "中国厦门·鼓浪屿", lat: 24.447, lng: 118.066, region: "asia", difficulty: 2 },
+            { name: "中国青岛·栈桥", lat: 36.058, lng: 120.316, region: "asia", difficulty: 2 },
+            { name: "中国天津·意式风情区", lat: 39.13, lng: 117.2, region: "asia", difficulty: 2 },
+            { name: "中国长沙·橘子洲", lat: 28.233, lng: 112.955, region: "asia", difficulty: 2 },
+            { name: "中国澳门·大三巴", lat: 22.197, lng: 113.543, region: "asia", difficulty: 2 },
+            { name: "中国大连·星海广场", lat: 38.879, lng: 121.6, region: "asia", difficulty: 2 },
+            { name: "中国昆明·滇池", lat: 24.95, lng: 102.7, region: "asia", difficulty: 3 },
+            { name: "中国哈尔滨·中央大街", lat: 45.775, lng: 126.618, region: "asia", difficulty: 3 },
+            { name: "中国桂林·漓江", lat: 25.273, lng: 110.29, region: "asia", difficulty: 3 },
+            { name: "中国三亚·亚龙湾", lat: 18.219, lng: 109.658, region: "asia", difficulty: 3 },
+            { name: "中国拉萨·布达拉宫", lat: 29.6558, lng: 91.117, region: "asia", difficulty: 4 },
+            { name: "中国乌鲁木齐·国际大巴扎", lat: 43.826, lng: 87.616, region: "asia", difficulty: 4 },
+            { name: "中国敦煌·莫高窟", lat: 40.035, lng: 94.809, region: "asia", difficulty: 4 },
+            { name: "中国喀什·老城", lat: 39.47, lng: 75.99, region: "asia", difficulty: 5 },
+            { name: "中国漠河·北极村", lat: 53.47, lng: 122.37, region: "asia", difficulty: 5 },
+            { name: "中国香港·中环", lat: 22.2819, lng: 114.1583, region: "asia", difficulty: 2 },
+            { name: "中国香港·旺角", lat: 22.3193, lng: 114.1694, region: "asia", difficulty: 2 },
+            { name: "中国香港·铜锣湾", lat: 22.28, lng: 114.183, region: "asia", difficulty: 2 },
+            { name: "中国香港·太平山顶", lat: 22.2711, lng: 114.1503, region: "asia", difficulty: 3 },
+            { name: "中国香港·金紫荆广场", lat: 22.2841, lng: 114.1734, region: "asia", difficulty: 2 },
+            { name: "中国香港·庙街夜市", lat: 22.3098, lng: 114.1697, region: "asia", difficulty: 3 },
+            { name: "中国澳门·议事亭前地", lat: 22.1933, lng: 113.5396, region: "asia", difficulty: 2 },
+            { name: "中国澳门·妈阁庙", lat: 22.1861, lng: 113.5311, region: "asia", difficulty: 3 },
+            { name: "中国澳门·官也街", lat: 22.1526, lng: 113.5572, region: "asia", difficulty: 3 },
+            { name: "中国澳门·东望洋灯塔", lat: 22.1986, lng: 113.5514, region: "asia", difficulty: 3 },
+            { name: "中国台北·西门町", lat: 25.042, lng: 121.5075, region: "asia", difficulty: 2 },
+            { name: "中国台北·士林夜市", lat: 25.0879, lng: 121.5243, region: "asia", difficulty: 2 },
+            { name: "中国高雄·六合夜市", lat: 22.6319, lng: 120.2994, region: "asia", difficulty: 2 },
+            { name: "中国台中·逢甲夜市", lat: 24.1786, lng: 120.6449, region: "asia", difficulty: 2 },
+            { name: "中国垦丁·垦丁大街", lat: 21.9482, lng: 120.78, region: "asia", difficulty: 4 },
+            { name: "中国日月潭", lat: 23.8571, lng: 120.9159, region: "asia", difficulty: 4 },
+            { name: "中国九份·老街", lat: 25.1097, lng: 121.845, region: "asia", difficulty: 4 }];
 
         // ==========================================================
         // 【模式配置】
@@ -909,7 +1001,9 @@
 
         // 逐级扩大范围搜索街景；返回 { imageId, lat, lng }（lat/lng 是图片真实坐标，用于精确判分）
         async function findMapillaryImage(lat, lng) {
-            const offsets = [0.004, 0.02, 0.08];
+            // Mapillary 对过大 bbox 直接报错(“reduce data”)，0.02/0.08 级无效；
+            // 改为逐级 0.004/0.008/0.012（约 440m ~ 1.3km），提升港澳台等点位命中率
+            const offsets = [0.004, 0.008, 0.012];
             for (const offset of offsets) {
                 const bbox = `${lng - offset},${lat - offset},${lng + offset},${lat + offset}`;
                 const url = `https://graph.mapillary.com/images?access_token=${MAPILLARY_TOKEN}&fields=id,geometry,is_pano&bbox=${bbox}&limit=20`;
@@ -1309,6 +1403,15 @@
             container.classList.toggle('enlarged', isMapEnlarged);
             btn.textContent = isMapEnlarged ? '✕' : '⛶';
             setTimeout(() => map.invalidateSize(), 350);
+        }
+
+        /* 移动端：展开/收起小地图 */
+        function toggleMobileMap() {
+            const mc = $('minimap-container');
+            const btn = $('mobile-map-btn');
+            const isOpen = mc.classList.toggle('mobile-open');
+            btn.textContent = isOpen ? '✕ 收起地图' : '🗺️ 地图';
+            if (isOpen) setTimeout(() => map.invalidateSize(), 300);
         }
 
         function showHint() {
