@@ -4,38 +4,75 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>cn171g11 · Projects</title>
+<meta name="description" content="cn171g11 的个人项目主页 — MmaGuessr 街景猜位置游戏、反物质维度速通优化器等">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:"Microsoft YaHei",Arial,sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px}
-h1{font-size:36px;margin-bottom:8px}
-.sub{color:#8899bb;margin-bottom:40px;font-size:15px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;width:100%;max-width:800px}
-.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:24px 22px;text-decoration:none;color:#fff;transition:all .25s;display:flex;flex-direction:column;gap:10px}
-.card:hover{transform:translateY(-4px);background:rgba(255,255,255,.12);border-color:#4CAF50;box-shadow:0 12px 36px rgba(76,175,80,.25)}
-.card .icon{font-size:36px}
-.card h3{font-size:20px}
-.card p{font-size:13px;color:#99a8c7;line-height:1.5}
-.card .tag{font-size:11px;background:rgba(76,175,80,.2);color:#4CAF50;padding:2px 10px;border-radius:20px;display:inline-block;align-self:flex-start}
-.foot{margin-top:40px;color:#8899bb;font-size:12px}
+body{
+  font-family:"Microsoft YaHei","PingFang SC",-apple-system,Arial,sans-serif;
+  background:radial-gradient(1200px 700px at 15% -10%,#1b2a4a 0%,transparent 60%),
+             radial-gradient(1000px 600px at 100% 0%,#241a3d 0%,transparent 55%),
+             linear-gradient(135deg,#0d1220 0%,#131a2e 50%,#0e1a33 100%);
+  color:#e8eefc;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:56px 20px 40px;
+}
+h1{font-size:38px;letter-spacing:-.5px;
+  background:linear-gradient(120deg,#58a6ff,#8a5cff 55%,#ffd700);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:#8899bb;margin:10px 0 44px;font-size:15px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;width:100%;max-width:1040px}
+.card{
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);border-radius:16px;
+  padding:26px 24px;text-decoration:none;color:#fff;transition:all .25s;
+  display:flex;flex-direction:column;gap:11px;backdrop-filter:blur(10px);
+}
+.card:hover{transform:translateY(-5px);background:rgba(255,255,255,.1);
+  border-color:rgba(88,166,255,.65);box-shadow:0 16px 40px rgba(88,166,255,.22)}
+.card .icon{font-size:38px;line-height:1}
+.card h3{font-size:19px;font-weight:600}
+.card p{font-size:13px;color:#99a8c7;line-height:1.62;flex:1}
+.card .tag{font-size:11px;background:rgba(88,166,255,.18);color:#9dcaff;
+  padding:3px 11px;border-radius:20px;display:inline-block;align-self:flex-start;letter-spacing:.3px}
+.card.green:hover{border-color:rgba(88,214,141,.65);box-shadow:0 16px 40px rgba(88,214,141,.2)}
+.card.green .tag{background:rgba(88,214,141,.18);color:#9ff0c0}
+.card.gold:hover{border-color:rgba(255,215,0,.6);box-shadow:0 16px 40px rgba(255,215,0,.18)}
+.card.gold .tag{background:rgba(255,215,0,.16);color:#ffd700}
+.foot{margin-top:52px;color:#66748c;font-size:12px;text-align:center;line-height:1.8}
+.foot a{color:#8899bb;text-decoration:none;border-bottom:1px dotted #556}
+.foot a:hover{color:#58a6ff}
+@media(max-width:680px){h1{font-size:30px}.cards{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <h1>cn171g11</h1>
-<div class="sub">Personal Projects · GitHub Pages</div>
+<div class="sub">Personal Projects · Hosted on GitHub Pages</div>
+
 <div class="cards">
-<a class="card" href="/mma-guessr/">
-<div class="icon">🗺️</div>
-<h3>MmaGuessr · 街景猜位置</h3>
-<p>GeoGuessr 风格地理猜谜游戏——观察世界各地随机街景，在地图上标记位置，按距离计分。支持经典/限时/竞赛/区域/无限五种模式。</p>
-<span class="tag">v1.8.0</span>
-</a>
-<a class="card" href="https://app.notion.com/p/3ac41ee86a0281a08b49cd7759af7b7f" target="_blank" rel="noopener">
-<div class="icon">📔</div>
-<h3>游戏文档</h3>
-<p>MmaGuessr 玩法教学与街景分布（Notion 文档）。</p>
-<span class="tag">文档</span>
-</a>
+
+  <a class="card green" href="/mma-guessr/">
+    <div class="icon">🗺️</div>
+    <h3>MmaGuessr · 街景猜位置</h3>
+    <p>GeoGuessr 风格地理猜谜游戏 —— 观察世界各地的随机街景，在地图上标出你猜测的位置，按实际距离计分。支持经典 / 限时 / 多轮竞赛 / 区域限定 / 无限闯关五种模式。</p>
+    <span class="tag">v1.8.0 · 街景猜谜</span>
+  </a>
+
+  <a class="card" href="/ad-speedrun-optimizer/">
+    <div class="icon">⚛️</div>
+    <h3>反物质维度 · 速通优化器</h3>
+    <p>《Antimatter Dimensions》首次大坍缩（无限）的最快路线与分步操作表。逆向官方源码得到全部核心公式，给出 39 个阶段共 9744 步的可执行操作流水，支持空格追踪。</p>
+    <span class="tag">v1.0 · 速通工具</span>
+  </a>
+
+  <a class="card gold" href="https://app.notion.com/p/3ac41ee86a0281a08b49cd7759af7b7f" target="_blank" rel="noopener">
+    <div class="icon">📔</div>
+    <h3>游戏文档</h3>
+    <p>MmaGuessr 的玩法教学与全球街景分布说明，在 Notion 上维护。</p>
+    <span class="tag">Notion · 持续更新</span>
+  </a>
+
 </div>
-<div class="foot">Built with love · Hosted on GitHub Pages</div>
+
+<div class="foot">
+  由 GitHub Pages 托管 · 源码见 <a href="https://github.com/cn171g11" target="_blank" rel="noopener">github.com/cn171g11</a>
+</div>
 </body>
 </html>

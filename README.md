@@ -1,20 +1,34 @@
-# MmaGuessr · 街景猜位置游戏
+# cn171g11.github.io
 
-一个以 [Mapillary](https://www.mapillary.com/) 为数据源的 GeoGuessr 风格地理猜谜游戏。观察世界各地随机街景，在地图上标记你猜测的位置，系统按实际距离计分。
+个人项目主页，托管在 GitHub Pages 上：**<https://cn171g11.github.io/>**
 
-支持五种模式：**经典 / 限时 / 多轮竞赛 / 区域限定 / 无限（闯关升级）**，并带有得分动画、距离可视化、历史最佳记录与成绩分享功能。
+这一仓库只承载**入口导航页**，各项目的实际代码都在各自的独立仓库里。
 
-> 当前版本：**v1.6.0**
+## 站点结构
 
-## 文件结构
+| 路径 | 内容 | 源码仓库 |
+|------|------|----------|
+| `/` | 项目导航首页（`index.html`） | 本仓库 |
+| `/mma-guessr/` | MmaGuessr · 街景猜位置游戏 | [cn171g11/mma-guessr](https://github.com/cn171g11/mma-guessr) |
+| `/ad-speedrun-optimizer/` | 反物质维度 · 速通优化器 | [cn171g11/ad-speedrun-optimizer](https://github.com/cn171g11/ad-speedrun-optimizer) |
+
+## 本仓库文件
 
 | 文件 | 说明 |
 |------|------|
-| `MmaGuessr.html` | 游戏主文件（核心） |
-| `index.html` | 站点首页，自动跳转到 `MmaGuessr.html` |
-| `game.html` | 早期原型（自定义题库版） |
-| `index-prototype.html` | 早期原型（原 `index.html` 备份） |
+| `index.html` | 导航首页，卡片式跳转到各子项目 |
 | `.nojekyll` | 禁用 GitHub Pages 的 Jekyll 构建 |
 | `.gitignore` | 忽略工作区内部目录（如 `.workbuddy/`） |
 
-> 本文档为占位说明，项目介绍、玩法说明、部署与更新等详细内容待补充完善。
+## 新增一个项目
+
+1. 新建独立仓库，把网页源码放在仓库根（`index.html` 在根目录）
+2. 在仓库 Settings → Pages 里把 Source 设为 `main` / `/`
+3. 在本仓库 `index.html` 的 `.cards` 容器里加一张卡片，`href` 指向 `/<仓库名>/`
+
+## 变更历史
+
+- 2026-09-14 清理仓库：移除早期原型与已废弃的内嵌游戏副本（`MmaGuessr.html` / `game.html` / `index-prototype.html`），
+  主页改为纯导航页并新增「反物质维度 · 速通优化器」入口。回滚点：`12d6484`
+- 2026-07-29 改用项目导航首页（项目各自独立成仓）
+- 2026-07-28 初始版本：内嵌 MmaGuessr 游戏的单页站点
