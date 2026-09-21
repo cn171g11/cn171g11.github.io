@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>溧水区腾讯街景工作台</title>
+  <title>G106 国道腾讯街景工作台</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
   <style>
     :root {
@@ -112,10 +112,10 @@
   <div class="shell">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-mark">LS</div>
+        <div class="brand-mark">106</div>
         <div>
-          <h1>南京市溧水区 腾讯街景工作台</h1>
-          <div class="subtitle">腾讯全域街景 · 分片加载 · 本地可编辑清单</div>
+          <h1>G106 国道 腾讯街景工作台</h1>
+          <div class="subtitle">腾讯街景全量枚举 · OSM 路线参考 · 分片加载</div>
         </div>
       </div>
       <div class="toolbar">
@@ -129,7 +129,7 @@
     </header>
     <main class="main">
       <section class="map-area">
-        <div id="map" aria-label="溧水区腾讯街景地图"></div>
+        <div id="map" aria-label="G106 国道腾讯街景地图"></div>
         <div class="map-overlay">
           <div class="metric"><strong id="panoramaCount">0</strong><span>街景点</span></div>
           <div class="metric"><strong id="tencentCount">0</strong><span>腾讯</span></div>
@@ -138,6 +138,7 @@
         <div class="legend">
           <span class="legend-item"><i class="dot gold"></i>腾讯街景</span>
           <span class="legend-item"><i class="dot green"></i>街景链路</span>
+          <span class="legend-item"><i class="dot orange"></i>G106 参考路线</span>
         </div>
         <aside class="detail" id="detailPanel" hidden>
           <div class="detail-head">
@@ -206,18 +207,19 @@
   <div class="notice" id="notice" hidden></div>
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    const STORAGE_KEY = "lishui-tencent-panorama-workbench-v1";
-    const LISHUI_PART_URLS = Array.from({ length: 5 }, (unused, index) =>
-      `lishui-tencent-panoramas-part-${String(index + 1).padStart(2, "0")}.json`);
-    const SOURCE_FILES = LISHUI_PART_URLS.map(url => ({ provider: "tencent", url }));
-    const CHAIN_FILES = ["lishui-tencent-lines.geojson"];
-    const ROUTE_FILES = [];
+    const STORAGE_KEY = "g106-tencent-panorama-workbench-v1";
+    const G106_PART_URLS = Array.from({ length: 7 }, (unused, index) =>
+      `g106-tencent-panoramas-part-${String(index + 1).padStart(2, "0")}.json`);
+    const SOURCE_FILES = G106_PART_URLS.map(url => ({ provider: "tencent", url }));
+    const CHAIN_FILES = ["g106-tencent-lines.geojson"];
+    // OSM G106 参考路线, 只作为走廊示意, 不代表腾讯实际拍摄路径.
+    const ROUTE_FILES = ["g106-osm-route.geojson"];
     // S341 页面只加载 S341 的两份数据，溧水全域数据见独立工作台。
     const TENCENT_VIEWER_URL = "https://qq-map.netlify.app/";
     // 百度官方全景入口 /panorama 已失效(实测 404), 改用仍返回 200 的 qt=pano 查询式入口.
     // 旧数据里记录的 sourceUrl 是失效地址, 因此这里只按 streetViewId 现算, 不沿用记录值.
-    const INITIAL_CENTER = { latitude: 31.59, longitude: 119.02 };
-    const INITIAL_ZOOM = 11;
+    const INITIAL_CENTER = { latitude: 31.60, longitude: 114.30 };
+    const INITIAL_ZOOM = 6;
     const METERS_PER_DEGREE_LATITUDE = 111320;
     const EARTH_RADIUS_METERS = 6378245;
     const GCJ_AXIS_OFFSET = 0.006693421622965943;
@@ -836,7 +838,7 @@
     function exportRecords() {
       const exportPayload = {
         schemaVersion: "1.1.0",
-        area: "南京市溧水区腾讯街景",
+        area: "中国 G106 国道腾讯街景",
         exportedAt: new Date().toISOString(),
         providerCounts: { tencent: countByProvider("tencent") },
         panoramas: applicationState.panoramas,
@@ -845,7 +847,7 @@
       const downloadUrl = URL.createObjectURL(blob);
       const anchor = document.createElement("a");
       anchor.href = downloadUrl;
-      anchor.download = "lishui-tencent-panoramas-export.json";
+      anchor.download = "g106-tencent-panoramas-export.json";
       anchor.click();
       URL.revokeObjectURL(downloadUrl);
     }
