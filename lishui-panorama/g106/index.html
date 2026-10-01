@@ -214,12 +214,11 @@
     const CHAIN_FILES = ["g106-tencent-lines.geojson"];
     // OSM G106 参考路线, 只作为走廊示意, 不代表腾讯实际拍摄路径.
     const ROUTE_FILES = ["g106-osm-route.geojson"];
-    // S341 页面只加载 S341 的两份数据，溧水全域数据见独立工作台。
     const TENCENT_VIEWER_URL = "https://qq-map.netlify.app/";
     // 百度官方全景入口 /panorama 已失效(实测 404), 改用仍返回 200 的 qt=pano 查询式入口.
     // 旧数据里记录的 sourceUrl 是失效地址, 因此这里只按 streetViewId 现算, 不沿用记录值.
-    const INITIAL_CENTER = { latitude: 31.60, longitude: 114.30 };
-    const INITIAL_ZOOM = 6;
+    const INITIAL_CENTER = { latitude: 32.1483, longitude: 118.1282 };
+    const INITIAL_ZOOM = 5;
     const METERS_PER_DEGREE_LATITUDE = 111320;
     const EARTH_RADIUS_METERS = 6378245;
     const GCJ_AXIS_OFFSET = 0.006693421622965943;
@@ -644,7 +643,7 @@
     }
 
     function getRouteDisplayPaths() {
-      // 两条来源: 采集文件内嵌的 route.elements(旧 S341 数据), 以及独立的参考路线 GeoJSON.
+      // 两条来源: 采集文件内嵌的 route.elements, 以及独立的参考路线 GeoJSON.
       const embeddedPaths = applicationState.sourcePayloads.flatMap(entry =>
         (entry.payload.route?.elements || [])
           .filter(element => Array.isArray(element.geometry) && element.geometry.length > 1)

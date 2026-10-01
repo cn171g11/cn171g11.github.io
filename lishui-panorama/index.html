@@ -212,7 +212,6 @@
     const SOURCE_FILES = LISHUI_PART_URLS.map(url => ({ provider: "tencent", url }));
     const CHAIN_FILES = ["lishui-tencent-lines.geojson"];
     const ROUTE_FILES = [];
-    // S341 页面只加载 S341 的两份数据，溧水全域数据见独立工作台。
     const TENCENT_VIEWER_URL = "https://qq-map.netlify.app/";
     // 百度官方全景入口 /panorama 已失效(实测 404), 改用仍返回 200 的 qt=pano 查询式入口.
     // 旧数据里记录的 sourceUrl 是失效地址, 因此这里只按 streetViewId 现算, 不沿用记录值.
@@ -642,7 +641,7 @@
     }
 
     function getRouteDisplayPaths() {
-      // 两条来源: 采集文件内嵌的 route.elements(旧 S341 数据), 以及独立的参考路线 GeoJSON.
+      // 两条来源: 采集文件内嵌的 route.elements, 以及独立的参考路线 GeoJSON.
       const embeddedPaths = applicationState.sourcePayloads.flatMap(entry =>
         (entry.payload.route?.elements || [])
           .filter(element => Array.isArray(element.geometry) && element.geometry.length > 1)
