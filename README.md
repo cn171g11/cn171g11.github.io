@@ -9,13 +9,23 @@
 | 路径 | 内容 | 源码仓库 |
 |------|------|----------|
 | `/` | 项目导航首页（`index.html`）| 本仓库 |
+| `/mma-guessr/` | MmaGuessr · 街景猜位置游戏 | [cn171g11/mma-guessr](https://github.com/cn171g11/mma-guessr) |
+| `/ad-speedrun-optimizer/` | 反物质维度 · 速通优化器 | [cn171g11/ad-speedrun-optimizer](https://github.com/cn171g11/ad-speedrun-optimizer) |
 | `/lishui-panorama/` | 溧水全域腾讯街景工作台 | 本仓库 |
+| `/lishui-panorama/s341/` | S341 街景工作台 | 本仓库 |
 | `/lishui-panorama/g101/` | G101 国道 · 腾讯街景 | 本仓库 |
 | `/lishui-panorama/g106/` | G106 国道 · 腾讯街景 | 本仓库 |
 | `/lishui-panorama/g312/` | G312 国道 · 腾讯街景 | 本仓库 |
-| `/lishui-panorama/s341/` | S341 街景工作台 | 本仓库 |
-| `/mma-guessr/` | MmaGuessr · 街景猜位置游戏 | [cn171g11/mma-guessr](https://github.com/cn171g11/mma-guessr) |
-| `/ad-speedrun-optimizer/` | 反物质维度 · 速通优化器 | [cn171g11/ad-speedrun-optimizer](https://github.com/cn171g11/ad-speedrun-optimizer) |
+
+## 快速链接
+
+| 走廊 | 线上地址 |
+|---|---|
+| 溧水全域 | https://cn171g11.github.io/lishui-panorama/ |
+| S341 | https://cn171g11.github.io/lishui-panorama/s341/ |
+| G101 | https://cn171g11.github.io/lishui-panorama/g101/ |
+| G106 | https://cn171g11.github.io/lishui-panorama/g106/ |
+| G312 | https://cn171g11.github.io/lishui-panorama/g312/ |
 
 ## 本仓库文件
 
