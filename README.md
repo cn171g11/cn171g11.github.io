@@ -15,6 +15,7 @@
 | `/lishui-panorama/s341/` | S341 街景工作台 | 本仓库 |
 | `/lishui-panorama/g101/` | G101 国道 · 腾讯街景 | 本仓库 |
 | `/lishui-panorama/g102/` | G102 国道 · 腾讯街景 | 本仓库 |
+| `/lishui-panorama/g103/` | G103 国道 · 腾讯街景 | 本仓库 |
 | `/lishui-panorama/g106/` | G106 国道 · 腾讯街景 | 本仓库 |
 | `/lishui-panorama/g312/` | G312 国道 · 腾讯街景 | 本仓库 |
 
@@ -26,6 +27,7 @@
 | S341 | https://cn171g11.github.io/lishui-panorama/s341/ |
 | G101 | https://cn171g11.github.io/lishui-panorama/g101/ |
 | G102 | https://cn171g11.github.io/lishui-panorama/g102/ |
+| G103 | https://cn171g11.github.io/lishui-panorama/g103/ |
 | G106 | https://cn171g11.github.io/lishui-panorama/g106/ |
 | G312 | https://cn171g11.github.io/lishui-panorama/g312/ |
 
